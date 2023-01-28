@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="all.css">
+</head>
+
+<body>
+    <div class="sade">
+        <div class="dodo">
+            <img src="No back grade.png" alt="">
+            <div class="form-div">
+                <form id="paymentForm">
+                    <div class="flex">
+                        <div class="form-group">
+                            <label for="first-name">First Name</label>
+                            <br>
+                            <input type="text" id="first-name" required />
+                        </div>
+                        &nbsp;
+                        &nbsp;
+                        <div class="form-group">
+                            <label for="last-name">Last Name</label>
+                            <br>
+                            <input type="text" id="last-name" required />
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <br>
+                        <input type="email" id="email-address" required />
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label for="amount">Amount to charge</label>
+                        <br>
+                        <div class="flex">
+                            <select>
+                                <option value="">NGN</option>
+                                <option value="">USD</option>
+                                <option value="">EUR</option>
+                                <option value="">DZD</option>
+                                <option value="">ALL</option>
+                                <option value="">AOA</option>
+                                <option value="">XCD</option>
+                                <option value="">ARS</option>
+                            </select>
+                            &nbsp;
+                            &nbsp;
+                            <input type="tel" id="amount" required />
+                        </div>
+                    </div>
+                    <br>
+                    <!-- <br> -->
+                    <div class="form-submit">
+                        <button type="submit" onclick="payWithPaystack()"> Pay Now </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+
+</body>
+<script src="https://js.paystack.co/v1/inline.js"></script>
+
+<script>
+    const paymentForm = document.getElementById('paymentForm');
+    paymentForm.addEventListener("submit", payWithPaystack, false);
+    function payWithPaystack(e) {
+        e.preventDefault();
+
+        let handler = PaystackPop.setup({
+            key: 'pk_test_d1d678c15b0b0c3c1599b09d788ab7238b110de0', // Replace with your public key
+            email: document.getElementById("email-address").value,
+            amount: document.getElementById("amount").value * 100,
+            ref: '' + Math.floor((Math.random() * 1000000000) + 1), // generates a pseudo-unique reference. Please replace with a reference you generated. Or remove the line entirely so our API will generate one for you
+            // label: "Optional string that replaces customer email"
+            onClose: function () {
+                alert('Window closed.');
+            },
+            callback: function (response) {
+                let message = 'Payment complete! Reference: ' + response.reference;
+                alert(message);
+            }
+        });
+
+        handler.openIframe();
+    }
+</script>
+
+</html>
